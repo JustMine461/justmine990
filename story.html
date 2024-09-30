@@ -3,170 +3,354 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Story Showcase</title>
+    <title>✨ Stories By JustMine ✨</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            /* Background image */
-            background-image: url('loginbackground.jpg');
-            background-size: cover; /* Cover the entire background */
-            background-position: center; /* Center the image */
+        /* ============================
+           Reset and Base Styles
+        ============================ */
+        * {
             margin: 0;
-            color: #fff; /* Text color for contrast */
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            padding: 0;
+            box-sizing: border-box;
         }
 
+        body, html {
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            overflow-y: scroll; /* Enable vertical scrolling */
+            background-color: #0d0d0d;
+            color: #ffffff;
+        }
+
+        /* ============================
+           Animated Particle Background
+        ============================ */
+        #particleCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        /* ============================
+           Gradient Overlay
+        ============================ */
+        .gradient-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(30, 144, 255, 0.3), rgba(255, 105, 180, 0.3));
+            pointer-events: none;
+            animation: gradientShift 10s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ============================
+           Container Styles
+        ============================ */
         .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px;
+            height: auto; /* Set height to auto */
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.7); /* Dark transparent background */
-            border-radius: 10px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-            max-width: 800px;
-            width: 90%;
-            margin: 20px auto;
+            backdrop-filter: blur(10px);
+            overflow-y: auto;
         }
 
+        /* ============================
+           Header Styles
+        ============================ */
         h1 {
-            color: #ecf0f1;
-            margin-bottom: 20px;
+            font-size: 4em;
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 40px;
+            position: relative;
+            animation: floatText 6s ease-in-out infinite;
+            z-index: 2; /* Ensure the title is above the background */
+        }
+
+        @keyframes floatText {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        h1::after {
+            content: '📚';
+            position: absolute;
+            right: -60px;
+            top: 0;
+            font-size: 0.8em;
+            animation: rotateEmoji 8s linear infinite;
+        }
+
+        @keyframes rotateEmoji {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ============================
+           Story List Styles
+        ============================ */
+        #storyList {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 20px 0;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .story-card {
-            background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s;
-            text-align: left;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
         }
 
         .story-card:hover {
-            transform: scale(1.02);
+            transform: translateY(-10px);
+            box-shadow: 0 25px 45px rgba(0,0,0,0.5);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .story-title {
-            font-size: 20px;
-            color: #1abc9c;
-            margin: 0 0 10px;
+            font-size: 1.8em;
+            color: #ff69b4;
+            margin-bottom: 15px;
+            position: relative;
+            transition: color 0.3s;
         }
 
-        .story-poster {
-            width: 100%;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            opacity: 0.8; /* Slightly transparent poster */
+        .story-card:hover .story-title {
+            color: #ff1493;
         }
 
+        .story-description {
+            font-size: 1em;
+            color: #dddddd;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            max-height: 100px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .story-description::after {
+            content: '...';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(to right, transparent, #0d0d0d 50%);
+            padding-left: 10px;
+        }
+
+        .coming-soon {
+            font-size: 2em;
+            color: #ffffff;
+            text-align: center;
+            margin-top: 40px;
+            position: relative;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .coming-soon::before {
+            content: '🚀';
+            margin-right: 10px;
+            animation: flyBy 5s linear infinite;
+        }
+
+        @keyframes flyBy {
+            0% { transform: translateX(-150px) rotate(0deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(150px) rotate(360deg); opacity: 0; }
+        }
+
+        /* ============================
+           Button Styles
+        ============================ */
         .story-link {
             display: inline-block;
-            margin: 5px 0;
-            padding: 10px;
-            background-color: #1abc9c;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #ff69b4;
             color: white;
-            border-radius: 5px;
             text-decoration: none;
+            border-radius: 5px;
             transition: background-color 0.3s;
         }
 
         .story-link:hover {
-            background-color: #16a085;
+            background-color: #ff1493;
         }
 
-        .coming-soon {
-            font-size: 18px;
-            color: #ecf0f1;
-            margin: 10px 0;
+        /* ============================
+           Scrollbar Styles
+        ============================ */
+        ::-webkit-scrollbar {
+            width: 12px; /* Scrollbar width */
         }
 
-        .admin-section {
-            margin-top: 20px;
-            text-align: center;
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 105, 180, 0.7);
+            border-radius: 10px; /* Rounded corners for scrollbar */
         }
 
-        .admin-section button {
-            padding: 10px 15px;
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
         }
 
-        .admin-section button:hover {
-            background-color: #c0392b;
+        /* ============================
+           Responsive Design
+        ============================ */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3em;
+            }
+
+            .story-title {
+                font-size: 1.5em;
+            }
+
+            .coming-soon {
+                font-size: 1.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .story-title {
+                font-size: 1.2em;
+            }
+
+            .coming-soon {
+                font-size: 1.2em;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Welcome to the Story Showcase</h1>
+    <!-- Particle Background Canvas -->
+    <canvas id="particleCanvas"></canvas>
+    
+    <!-- Gradient Overlay -->
+    <div class="gradient-overlay"></div>
 
-    <div id="storyList"></div>
+    <!-- Main Container -->
+    <div class="container">
+        <h1>✨ JustMine's Stories ✨</h1>
+        
+        <div id="storyList">
+            <!-- Example Story Card -->
+            <div class="story-card">
+                <h2 class="story-title">Threads Of Fate- Volume 1</h2>
+                <p class="story-description">Threads of Fate intertwines dark humor, epic battles, and deep friendships as heroes confront their destinies amidst shadows and chaos.</p>
+                <a href="#" class="story-link">Read More</a>
+            </div>
+        </div>
 
-    <div class="coming-soon">Coming Soon:</div>
-    <div class="coming-soon">- Glitch Bound S2</div>
-    <div class="coming-soon">- Glitch Bound S3</div>
-
-    <div class="admin-section" id="adminSection" style="display: none;">
-        <h2>Admin Only</h2>
-        <button onclick="uploadStory()">Upload Story</button>
+        <div class="coming-soon">Coming Soon: New Stories to Explore!</div>
     </div>
-</div>
 
-<script>
-    // Sample stories data (replace with actual story data)
-    const stories = [
-        {
-            title: "Glitch Bound S1",
-            poster: "firstposter.webp",
-            fileUrl: "https://example.com/stories/lord_of_infinity_s1.pdf"
+    <script>
+        // ============================
+        // Particle Background Script
+        // ============================
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        let particlesArray = [];
+        
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.size > 0.2) this.size -= 0.1; // Shrink particle size
+            }
+
+            draw() {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
-    ];
 
-    // Display stories
-    function displayStories() {
-        const storyList = document.getElementById('storyList');
-        storyList.innerHTML = ''; // Clear existing stories
+        function init() {
+            for (let i = 0; i < 100; i++) {
+                particlesArray.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
+            }
+        }
 
-        stories.forEach(story => {
-            const storyCard = document.createElement('div');
-            storyCard.className = 'story-card';
-            storyCard.innerHTML = `
-                <h3 class="story-title">${story.title}</h3>
-                <img src="${story.poster}" alt="Poster" class="story-poster">
-                <a href="${story.fileUrl}" class="story-link" target="_blank">Read Story</a>
-            `;
-            storyList.appendChild(storyCard);
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+                if (particlesArray[i].size <= 0.3) {
+                    particlesArray.splice(i, 1); // Remove small particles
+                    i--;
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particlesArray = [];
+            init();
         });
-    }
 
-    // Admin upload function (dummy function)
-    function uploadStory() {
-        alert("This feature is for admin use only!");
-        // Implement the actual upload logic here
-    }
-
-    // Check if the user is logged in as admin (replace with actual admin check logic)
-    const loggedInUser = localStorage.getItem('loggedIn');
-    if (loggedInUser) {
-        const user = JSON.parse(localStorage.getItem(loggedInUser));
-        if (user.email === 'admin@justmine.com') {
-            document.getElementById('adminSection').style.display = 'block';
-        }
-    }
-
-    // Load stories on page load
-    displayStories();
-</script>
-
+        init();
+        animate();
+    </script>
 </body>
 </html>
