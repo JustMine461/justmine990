@@ -15,7 +15,7 @@
             color: #333;
             overflow-x: hidden;
             background: linear-gradient(135deg, #ff6b6b, #f7d94b, #49b1ff);
-            height: 100vh;
+            min-height: 100vh; /* Changed from height to min-height */
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -34,19 +34,18 @@
             background-color: rgba(44, 62, 80, 0.9);
             color: white;
             text-align: center;
-            padding: 40px 0; /* Increased padding for a fuller look */
+            padding: 40px 20px; /* Added horizontal padding for smaller screens */
             width: 100%;
-            position: relative; /* Adjusted position */
             z-index: 1;
-            border-bottom-left-radius: 40px; /* Rounded bottom left corner */
-            border-bottom-right-radius: 40px; /* Rounded bottom right corner */
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            margin-bottom: 40px; /* Space for container */
+            margin-bottom: 40px;
         }
 
         header h1 {
             margin: 0;
-            font-size: 3.5rem; /* Increased font size */
+            font-size: 3.5rem;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
             font-weight: 800;
             letter-spacing: 2px;
@@ -58,12 +57,15 @@
             display: flex;
             flex-direction: row;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Changed to flex-start for better alignment */
             gap: 40px;
-            z-index: 1; /* Ensure it's above any potential background */
-            opacity: 0; /* Start hidden */
-            animation: slideIn 1s forwards; /* Slide in animation */
-            animation-delay: 0.5s; /* Delay for header animation */
+            z-index: 1;
+            opacity: 0;
+            animation: slideIn 1s forwards;
+            animation-delay: 0.5s;
+            flex: 1; /* Allows the container to grow and push the footer down */
+            padding: 20px; /* Added padding for better spacing on smaller screens */
+            box-sizing: border-box;
         }
 
         @keyframes slideIn {
@@ -80,7 +82,8 @@
             transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
             overflow: hidden;
-            width: 320px; /* Fixed width for sections */
+            width: 100%;
+            max-width: 320px; /* Changed to max-width for flexibility */
             text-align: center;
             backdrop-filter: blur(10px);
         }
@@ -108,10 +111,11 @@
         .link-list {
             list-style-type: none;
             padding: 0;
+            margin: 0;
         }
 
         .link-list li {
-            margin: 20px 0;
+            margin: 15px 0; /* Reduced margin for better spacing on smaller screens */
         }
 
         .link-list a {
@@ -127,6 +131,7 @@
             position: relative;
             display: inline-block;
             overflow: hidden;
+            min-width: 200px; /* Ensures buttons are adequately sized on smaller screens */
         }
 
         .link-list a:hover {
@@ -145,18 +150,32 @@
         /* Footer */
         footer {
             text-align: center;
-            padding: 20px 0;
+            padding: 20px 10px; /* Adjusted padding for smaller screens */
             background-color: rgba(44, 62, 80, 0.9);
             color: white;
-            position: absolute;
-            bottom: 0;
             width: 100%;
-            z-index: 1; /* Ensure it's above any background */
-            border-radius: 20px 20px 0 0; /* Rounded top corners */
+            z-index: 1;
+            border-radius: 20px 20px 0 0;
             box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
         }
 
         /* Responsive Design */
+        @media (max-width: 1024px) {
+            header h1 {
+                font-size: 3rem;
+            }
+
+            .section h2 {
+                font-size: 2.2rem;
+            }
+
+            .link-list a {
+                font-size: 1.1rem;
+                padding: 12px 20px;
+                min-width: 180px;
+            }
+        }
+
         @media (max-width: 768px) {
             header h1 {
                 font-size: 2.5rem;
@@ -167,11 +186,34 @@
             }
 
             .link-list a {
-                font-size: 1rem; /* Adjust font size for smaller screens */
+                font-size: 1rem;
+                padding: 10px 18px;
+                min-width: 160px;
             }
 
             .container {
-                flex-direction: column; /* Stack sections on smaller screens */
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            footer {
+                border-radius: 20px 20px 0 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .section h2 {
+                font-size: 1.8rem;
+            }
+
+            .link-list a {
+                font-size: 0.95rem;
+                padding: 8px 16px;
+                min-width: 140px;
             }
         }
     </style>
